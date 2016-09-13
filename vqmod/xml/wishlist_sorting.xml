@@ -1,0 +1,51 @@
+<!--/*
+ * @support
+ * http://www.opensourcetechnologies.com/contactus.html
+ * sales@opensourcetechnologies.com
+* */-->
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>VQMOD Manager For Wishlist Sorting</id>
+	<version>2.1.x and above</version>
+	<vqmver required="true">2.5.0</vqmver>
+	<author>Open Source Technologies</author>
+	
+	<file name="catalog/controller/account/wishlist.php">
+			<operation info="Wishlist Sorting">
+				<search position="after"><![CDATA[
+					$data['button_remove'] = $this->language->get('button_remove');
+				]]></search>
+				<add><![CDATA[
+					$data['wishlist_sorting_status'] = $this->config->get('wishlist_sorting_status');
+					$data['wishlist_sorting_productname'] = $this->config->get('wishlist_sorting_productname');
+					$wishlist_sorting_status = $this->config->get('wishlist_sorting_status');
+					$wishlist_sorting_productname = $this->config->get('wishlist_sorting_productname');
+				]]></add>
+			</operation>
+
+			<operation info="Wishlist Array Name">
+				<search position="replace"><![CDATA[
+					$data['products'][]
+				]]></search>
+				<add><![CDATA[
+					$data['products'][$product_info['name']]
+				]]></add>
+			</operation>
+
+			<operation info="Wishlist Sorting">
+				<search position="before"><![CDATA[
+					$data['continue'] = $this->url->link('account/account', '', 'SSL');
+				]]></search>
+				<add><![CDATA[
+					if($wishlist_sorting_status==1)
+					{
+						if($wishlist_sorting_productname==1)
+							{ksort($data['products']);}
+						else
+							{krsort($data['products']);}
+					}
+				]]></add>
+			</operation>
+			
+	</file>
+</modification>
